@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     private EnemyHealth _enemyHealth;
     private bool moveEnabled;
 
+    public GameObject Prefab { get; set; } // Reference to the prefab for this enemy
     public static event System.Action<Enemy> OnEndReached;
 
     void Start()
@@ -21,6 +22,11 @@ public class Enemy : MonoBehaviour
         // _spriteRenderer = GetComponent<SpriteRenderer>();
         // _enemyHealth = GetComponent<EnemyHealth>();
         // _lastPointPosition = transform.position;
+    }
+
+    public void Initialize(GameObject prefab)
+    {
+        Prefab = prefab;
     }
 
     void Awake()
@@ -93,7 +99,18 @@ public class Enemy : MonoBehaviour
     {
         OnEndReached?.Invoke(this);
         _enemyHealth.ResetHealth();
-        ObjectPooler.ReturnToPool(gameObject);
+
+        Enemy _enemy = GetComponent<Enemy>();
+        if (_enemy != null && _enemy.Prefab != null)
+        {
+            ObjectPooler pooler = FindObjectOfType<ObjectPooler>();
+            pooler.ReturnToPool(_enemy.Prefab, _enemy.gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("Prefab reference is missing on the enemy. Destroying instead.");
+            Destroy(_enemy.gameObject);
+        }
     }
 
     private Vector3 CurrentPointPosition => Waypoint.Points[_currentWaypointIndex];

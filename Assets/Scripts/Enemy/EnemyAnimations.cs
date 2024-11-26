@@ -48,7 +48,17 @@ public class EnemyAnimations : MonoBehaviour
         yield return new WaitForSeconds(GetCurrentAnimationLength() + 0.3f);
         _enemy.ResumeMovement();
         _enemyHealth.ResetHealth();
-        ObjectPooler.ReturnToPool(_enemy.gameObject);
+        
+        if (_enemy.Prefab != null)
+        {
+            ObjectPooler pooler = FindObjectOfType<ObjectPooler>();
+            pooler.ReturnToPool(_enemy.Prefab, _enemy.gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("Prefab reference is missing on the enemy. Destroying instead.");
+            Destroy(_enemy.gameObject);
+        }
     }
 
     private void EnemyHit(Enemy enemy)

@@ -13,73 +13,111 @@ public class EnemyType
 public class WaveConfigeration
 {
     public List<EnemyType> enemyTypes;
+    public float delayBtwnSpawns;
 }
 
 public class Spawner : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private int enemyCount = 10;
-    [SerializeField] private GameObject testGO;
+    [SerializeField] private List<WaveConfigeration> waves;
     [SerializeField] private Waypoint defaultWaypoint; // Default waypoint for enemies
 
-    [Header("Fixed Delay")]
-    [SerializeField] private float delayBtwnSpawns;
-
+    private int _currentWaveIndex = 0;
     private float _spawnTimer;
-    private int _enemiesSpawned;
     private ObjectPooler _pooler;
-
-    
+    private Queue<EnemyType> _currentWaveQueue = new Queue<EnemyType>();
+    private bool _isSpawning = false;
 
     // Start is called before the first frame update
     void Start()
     {
         _pooler = GetComponent<ObjectPooler>();
+        Debug.Log($" wave count is {waves.Count}");
+        StartNextWave();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!_isSpawning || _currentWaveQueue.Count == 0) return;
+
         _spawnTimer -= Time.deltaTime;
-        if (_spawnTimer < 0)
+        if (_spawnTimer <= 0)
         {
-            _spawnTimer = delayBtwnSpawns;
-            if (_enemiesSpawned < enemyCount)
+            _spawnTimer = waves[_currentWaveIndex].delayBtwnSpawns;
+            SpawnEnemy();
+        }
+    }
+
+    private void StartNextWave()
+    {
+        if (_currentWaveIndex >= waves.Count)
+        {
+            Debug.Log("all waves complete");
+            _isSpawning = false;
+            return;
+        }
+
+        Debug.Log($"Starting wave {_currentWaveIndex + 1}");
+        _currentWaveQueue.Clear();
+
+        // Populate the queue for this wave
+        foreach (EnemyType enemyType in waves[_currentWaveIndex].enemyTypes)
+        {
+            for (int i = 0; i < enemyType.count; i++)
             {
-                _enemiesSpawned++;
-                SpawnEnemy();
+                _currentWaveQueue.Enqueue(enemyType);
             }
         }
+
+        _spawnTimer = 0;
+        _isSpawning = true;
+    }
+
+    private void EndCurrentWave()
+    {
+        _isSpawning = false;
+        _currentWaveIndex++;
+        Invoke(nameof(StartNextWave), 3f); // Delay before starting the next wave
     }
 
     private void SpawnEnemy()
     {
-        GameObject newInstance = _pooler.GetInstanceFromPool();
-        
-
-    if (newInstance != null)
-    {
-        Waypoint waypoint = GetComponent<Waypoint>();
-        if (waypoint == null || waypoint.Points.Length == 0)
+        if (_currentWaveQueue.Count == 0)
         {
-            Debug.LogError("Waypoint system is not properly set up on the Spawner!");
+            EndCurrentWave();
             return;
         }
 
-        Vector3 firstWaypointPosition = waypoint.GetWaypointPos(0);
+        EnemyType enemyTypeToSpawn = _currentWaveQueue.Dequeue();
 
-        Enemy enemyComponent = newInstance.GetComponent<Enemy>();
-        if (enemyComponent != null)
-        {
-            Debug.Log($"Spawning enemy at {firstWaypointPosition}");
-            enemyComponent.ResetEnemy(firstWaypointPosition, waypoint);
-        }
-        else
-        {
-            Debug.LogError("Enemy component not found on spawned instance!");
-        }
+        GameObject newInstance = _pooler.GetInstanceFromPool(enemyTypeToSpawn.prefab);
 
-        newInstance.SetActive(true);
-    }
+        if (newInstance != null)
+        {
+            Waypoint waypoint = GetComponent<Waypoint>();
+            if (waypoint == null || waypoint.Points.Length == 0)
+            {
+                Debug.LogError("Waypoint system is not properly set up on the Spawner!");
+                return;
+            }
+
+            Vector3 firstWaypointPosition = waypoint.GetWaypointPos(0);
+
+            Enemy enemyComponent = newInstance.GetComponent<Enemy>();
+            if (enemyComponent != null)
+            {
+                Debug.Log($"Spawning enemy at {firstWaypointPosition}");
+                Debug.Log($"Spawning enemy of type: {enemyTypeToSpawn.prefab.name}");
+                enemyComponent.ResetEnemy(firstWaypointPosition, waypoint);
+                enemyComponent.Initialize(enemyTypeToSpawn.prefab);
+            }
+            else
+            {
+                Debug.LogError("Enemy component not found on spawned instance!");
+            }
+
+            newInstance.SetActive(true);
+        }
     }
 }

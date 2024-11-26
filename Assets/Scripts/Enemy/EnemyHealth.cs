@@ -41,7 +41,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void CreateHealthBar()
     {
-            if (_healthBar != null) return; // Prevent duplicate health bars
+        if (_healthBar != null) return; // Prevent duplicate health bars
         Debug.Log($"Creating health bar for {gameObject.name}");
         
         GameObject newBar = Instantiate(healthBarPrefab, barPosition.position, Quaternion.identity);
@@ -74,6 +74,17 @@ public class EnemyHealth : MonoBehaviour
     {
         OnEnemyKilled?.Invoke(_enemy); // Notify listeners that the enemy has died
         ResetHealth();
-        ObjectPooler.ReturnToPool(gameObject); // Return the enemy to the object pool
+
+        //return to pool
+        if (_enemy.Prefab != null)
+        {
+            ObjectPooler pooler = FindObjectOfType<ObjectPooler>();
+            pooler.ReturnToPool(_enemy.Prefab, _enemy.gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("Prefab reference is missing on the enemy. Destroying instead.");
+            Destroy(_enemy.gameObject);
+        }
     }
 }

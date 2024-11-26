@@ -4,55 +4,81 @@ using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
 {
-    [SerializeField] private GameObject prefab;
-    [SerializeField] private int poolSize = 10;
+    [System.Serializable]
+    public class Pool
+    {
+        public string poolName;             // Name for identifying the pool
+        public GameObject prefab;           // Prefab for this pool
+        public int poolSize = 10;           // Initial pool size
+    }
 
-    private List<GameObject> _pool;
-    private GameObject _poolContainer;
+    [SerializeField] private List<Pool> pools; // List of different pools
+    private Dictionary<GameObject, Queue<GameObject>> poolDictionary;
+    private Dictionary<GameObject, Transform> poolContainers;
 
     private void Awake()
     {
-        _pool = new List<GameObject>();
-        _poolContainer = new GameObject($"Pool - {prefab.name}");
-        CreatePooler();
-    }
+        poolDictionary = new Dictionary<GameObject, Queue<GameObject>>();
+        poolContainers = new Dictionary<GameObject, Transform>();
 
-    private void CreatePooler()
-    {
-        for (int i = 0; i < poolSize; i++)
+        foreach (Pool pool in pools)
         {
-            _pool.Add(CreateInstance());
+            CreatePool(pool);
         }
     }
 
-    private GameObject CreateInstance()
+    private void CreatePool(Pool pool)
     {
-        GameObject newInstance = Instantiate(prefab);
-        newInstance.transform.SetParent(_poolContainer.transform);
-        newInstance.SetActive(false);
-        return newInstance;
-    }
+        Queue<GameObject> objectPool = new Queue<GameObject>();
+        GameObject poolContainer = new GameObject($"Pool - {pool.prefab.name}");
+        poolContainers[pool.prefab] = poolContainer.transform;
 
-    public GameObject GetInstanceFromPool()
-    {
-        for (int i = 0; i < _pool.Count; i++)
+        for (int i = 0; i < pool.poolSize; i++)
         {
-            if (!_pool[i].activeInHierarchy)
-            {
-                return _pool[i];
-            }
+            GameObject newInstance = Instantiate(pool.prefab);
+            newInstance.transform.SetParent(poolContainer.transform);
+            newInstance.SetActive(false);
+            objectPool.Enqueue(newInstance);
         }
-        return CreateInstance();
+
+        poolDictionary[pool.prefab] = objectPool;
     }
 
-    public static void ReturnToPool(GameObject instance)
+    public GameObject GetInstanceFromPool(GameObject prefab)
     {
-        instance.SetActive(false);
+        if (!poolDictionary.ContainsKey(prefab))
+        {
+            Debug.LogWarning($"No pool exists for prefab {prefab.name}. Creating one dynamically.");
+            CreatePool(new Pool { prefab = prefab, poolSize = 10 });
+        }
+
+        Queue<GameObject> objectPool = poolDictionary[prefab];
+
+        if (objectPool.Count > 0)
+        {
+            GameObject instance = objectPool.Dequeue();
+            instance.SetActive(true);
+            return instance;
+        }
+        else
+        {
+            // If pool is empty, instantiate a new object
+            GameObject newInstance = Instantiate(prefab);
+            newInstance.transform.SetParent(poolContainers[prefab]);
+            return newInstance;
+        }
     }
 
-    public static IEnumerator ReturnToPoolWithDelay(GameObject instance, float delay)
+    public void ReturnToPool(GameObject prefab, GameObject instance)
     {
-        yield return new WaitForSeconds(delay);
+        if (!poolDictionary.ContainsKey(prefab))
+        {
+            Debug.LogWarning($"No pool exists for prefab {prefab.name}. Cannot return instance to pool.");
+            Destroy(instance); // Destroy instead of pooling if pool doesn't exist
+            return;
+        }
+
         instance.SetActive(false);
+        poolDictionary[prefab].Enqueue(instance);
     }
 }

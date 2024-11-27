@@ -51,6 +51,7 @@ public class Spawner : MonoBehaviour
 
     private void StartNextWave()
     {
+
         if (_currentWaveIndex >= waves.Count)
         {
             Debug.Log("all waves complete");
@@ -64,6 +65,11 @@ public class Spawner : MonoBehaviour
         // Populate the queue for this wave
         foreach (EnemyType enemyType in waves[_currentWaveIndex].enemyTypes)
         {
+            if (enemyType.prefab == null)
+            {
+                Debug.LogError("Enemy prefab is not assigned!");
+                return;
+            }
             for (int i = 0; i < enemyType.count; i++)
             {
                 _currentWaveQueue.Enqueue(enemyType);
@@ -110,7 +116,8 @@ public class Spawner : MonoBehaviour
                 Debug.Log($"Spawning enemy at {firstWaypointPosition}");
                 Debug.Log($"Spawning enemy of type: {enemyTypeToSpawn.prefab.name}");
                 enemyComponent.ResetEnemy(firstWaypointPosition, waypoint);
-                enemyComponent.Initialize(enemyTypeToSpawn.prefab);
+                Debug.Assert (enemyTypeToSpawn.prefab != null, "bro why is the prefab for the enemy to spawn null");
+                enemyComponent.Prefab = enemyTypeToSpawn.prefab;
             }
             else
             {

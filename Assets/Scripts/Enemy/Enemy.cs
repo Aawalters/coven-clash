@@ -26,6 +26,13 @@ public class Enemy : MonoBehaviour
 
     public void Initialize(GameObject prefab)
     {
+
+        if (prefab == null)
+        {
+            Debug.LogError("Attempted to set a null prefab!");
+            return;
+        }
+
         Prefab = prefab;
     }
 
@@ -100,17 +107,16 @@ public class Enemy : MonoBehaviour
         OnEndReached?.Invoke(this);
         _enemyHealth.ResetHealth();
 
-        Enemy _enemy = GetComponent<Enemy>();
-        if (_enemy != null && _enemy.Prefab != null)
+        if (Prefab != null)
         {
             ObjectPooler pooler = FindObjectOfType<ObjectPooler>();
-            pooler.ReturnToPool(_enemy.Prefab, _enemy.gameObject);
+            pooler.ReturnToPool(Prefab, gameObject);
         }
         else
         {
-            Debug.LogWarning("Prefab reference is missing on the enemy. Destroying instead.");
-            Destroy(_enemy.gameObject);
+            Debug.LogWarning("Prefab reference is missing on the enemy when returning to the pool.");
         }
+
     }
 
     private Vector3 CurrentPointPosition => Waypoint.Points[_currentWaypointIndex];

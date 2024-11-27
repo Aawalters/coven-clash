@@ -48,7 +48,7 @@ public class ObjectPooler : MonoBehaviour
     {
         if (!poolDictionary.ContainsKey(prefab))
         {
-            Debug.LogWarning($"No pool exists for prefab {prefab.name}. Creating one dynamically.");
+            Debug.LogWarning($"Creating a new pool dynamically for prefab: {prefab.name}. Consider preloading this prefab.");
             CreatePool(new Pool { prefab = prefab, poolSize = 10 });
         }
 
@@ -62,19 +62,21 @@ public class ObjectPooler : MonoBehaviour
         }
         else
         {
-            // If pool is empty, instantiate a new object
+            Debug.LogWarning($"Pool for {prefab.name} is empty. Consider increasing initial pool size.");
             GameObject newInstance = Instantiate(prefab);
             newInstance.transform.SetParent(poolContainers[prefab]);
             return newInstance;
         }
     }
 
+
     public void ReturnToPool(GameObject prefab, GameObject instance)
     {
         if (!poolDictionary.ContainsKey(prefab))
         {
             Debug.LogWarning($"No pool exists for prefab {prefab.name}. Cannot return instance to pool.");
-            Destroy(instance); // Destroy instead of pooling if pool doesn't exist
+            
+            instance.SetActive(false); // Deactivate, don't destroy
             return;
         }
 

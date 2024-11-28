@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     public GameObject Prefab { get; set; } // Reference to the prefab for this enemy
     public static event System.Action<Enemy> OnEndReached;
     public bool isAlive;
+    public EnemyHealth EnemyHealth => _enemyHealth;
 
     // Properties to track progress
     public int CurrentWaypointIndex => _currentWaypointIndex; 
@@ -147,7 +148,7 @@ public class Enemy : MonoBehaviour
     // Static method for comparing progress of two enemies
     public static int CompareProgress(Enemy enemyA, Enemy enemyB)
     {
-        Debug.Log($"comparing two enemies. enemy A index {enemyA.CurrentWaypointIndex}, enemy B index {enemyB.CurrentWaypointIndex}");
+        //Debug.Log($"comparing two enemies. enemy A index {enemyA.CurrentWaypointIndex}, enemy B index {enemyB.CurrentWaypointIndex}");
         // First compare based on waypoint index (further along in the path is prioritized)
         if (enemyA.CurrentWaypointIndex < enemyB.CurrentWaypointIndex)
         {

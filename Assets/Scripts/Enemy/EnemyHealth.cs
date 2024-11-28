@@ -50,9 +50,9 @@ public class EnemyHealth : MonoBehaviour
         _healthBar = container.FillAmountImage;
     }
 
-    private void DealDamage(float daamgeReceived)
+    public void DealDamage(float damgeReceived)
     {
-        CurrentHealth -= daamgeReceived;
+        CurrentHealth -= damgeReceived;
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;

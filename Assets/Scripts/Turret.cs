@@ -5,7 +5,7 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     [SerializeField] private int attackRange = 4;
-    private Enemy CurrentEnemyTarget;
+    public Enemy CurrentEnemyTarget;
     private List<Enemy> _enemies;
 
     // Start is called before the first frame update

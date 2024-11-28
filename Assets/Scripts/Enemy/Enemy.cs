@@ -16,17 +16,14 @@ public class Enemy : MonoBehaviour
 
     public GameObject Prefab { get; set; } // Reference to the prefab for this enemy
     public static event System.Action<Enemy> OnEndReached;
+    public bool isAlive;
 
-    void Start()
-    {
-        // _spriteRenderer = GetComponent<SpriteRenderer>();
-        // _enemyHealth = GetComponent<EnemyHealth>();
-        // _lastPointPosition = transform.position;
-    }
+    // Properties to track progress
+    public int CurrentWaypointIndex => _currentWaypointIndex; 
+    public float DistanceToNextWaypoint => (transform.position - CurrentPointPosition).magnitude;
 
     public void Initialize(GameObject prefab)
     {
-
         if (prefab == null)
         {
             Debug.LogError("Attempted to set a null prefab!");
@@ -42,6 +39,7 @@ public class Enemy : MonoBehaviour
         _enemyHealth = GetComponent<EnemyHealth>();
         _lastPointPosition = transform.position;
         moveEnabled = true;
+        isAlive = true;
     }
 
     void Update()
@@ -110,13 +108,13 @@ public class Enemy : MonoBehaviour
         if (Prefab != null)
         {
             ObjectPooler pooler = FindObjectOfType<ObjectPooler>();
+            isAlive = false;
             pooler.ReturnToPool(Prefab, gameObject);
         }
         else
         {
             Debug.LogWarning("Prefab reference is missing on the enemy when returning to the pool.");
         }
-
     }
 
     private Vector3 CurrentPointPosition => Waypoint.Points[_currentWaypointIndex];
@@ -131,9 +129,9 @@ public class Enemy : MonoBehaviour
 
         transform.position = position; // Reset position to the first waypoint
         Waypoint = waypoint;           // Reassign the waypoint system
-        //Debug.Log($"Resetting enemy to position {position} with waypoint {waypoint.name}");
         _currentWaypointIndex = 0;     // Reset the waypoint index
         _enemyHealth.ResetHealth();    // Reset health if necessary
+        isAlive = true;
     }
 
     public void StopMovement()
@@ -146,4 +144,23 @@ public class Enemy : MonoBehaviour
         moveEnabled = true;
     }
 
+    // Static method for comparing progress of two enemies
+    public static int CompareProgress(Enemy enemyA, Enemy enemyB)
+    {
+        Debug.Log($"comparing two enemies. enemy A index {enemyA.CurrentWaypointIndex}, enemy B index {enemyB.CurrentWaypointIndex}");
+        // First compare based on waypoint index (further along in the path is prioritized)
+        if (enemyA.CurrentWaypointIndex < enemyB.CurrentWaypointIndex)
+        {
+            return 1; // enemyB is further along
+        }
+        else if (enemyA.CurrentWaypointIndex > enemyB.CurrentWaypointIndex)
+        {
+            return -1; // enemyA is further along
+        }
+        else
+        {
+            // If they are at the same waypoint, prioritize by distance to the next waypoint
+            return enemyA.DistanceToNextWaypoint > enemyB.DistanceToNextWaypoint ? 1 : -1;
+        }
+    }
 }

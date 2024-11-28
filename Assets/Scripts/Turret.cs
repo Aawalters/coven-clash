@@ -11,7 +11,7 @@ public class Turret : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        _enemies = new List<Enemy>();
     }
 
     // Update is called once per frame
@@ -28,8 +28,14 @@ public class Turret : MonoBehaviour
             CurrentEnemyTarget = null;
             return;
         }
+        // Sort enemies by progress (so the one further along is prioritized)
+        _enemies.Sort((enemyA, enemyB) => Enemy.CompareProgress(enemyA, enemyB));
 
-        CurrentEnemyTarget = _enemies[0];
+        // Remove any dead or invalid enemies from the list
+        _enemies.RemoveAll(enemy => enemy == null || !enemy.isAlive); 
+
+        // After cleanup, pick the new target (if any)
+        CurrentEnemyTarget = _enemies.Count > 0 ? _enemies[0] : null;
     }
 
     private void RotateTowardsTarget() 
@@ -50,8 +56,9 @@ public class Turret : MonoBehaviour
         }
     }
 
-    private void OnTriggerExitr2D(Collider2D other) 
+    private void OnTriggerExit2D(Collider2D other) 
     {
+        //Debug.Log("trigger exit 2d proc'ing");
         if (other.CompareTag("Enemy"))
         {
             Enemy enemy = other.GetComponent<Enemy>();

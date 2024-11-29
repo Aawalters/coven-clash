@@ -56,6 +56,8 @@ public class TurretProjectile : MonoBehaviour
         _currentProjectileLoaded.TurretOwner = this;
         _currentProjectileLoaded.ResetProjectile();  //does nothing rn
         _currentProjectileLoaded.Damage = Damage;
+        _currentProjectileLoaded.Prefab = prefab;
+        _currentProjectileLoaded.transform.rotation = transform.rotation;
         newInstance.SetActive(true);
     }
 
@@ -66,6 +68,7 @@ public class TurretProjectile : MonoBehaviour
     
     public void ResetTurretProjectile()
     {
+        _pooler.ReturnToPool( _currentProjectileLoaded.Prefab, _currentProjectileLoaded.gameObject);
         _currentProjectileLoaded = null;
     }
 }

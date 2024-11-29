@@ -81,6 +81,7 @@ public class ObjectPooler : MonoBehaviour
         }
 
         instance.SetActive(false);
+        instance.transform.SetParent(poolContainers[prefab]);
         poolDictionary[prefab].Enqueue(instance);
     }
 }

@@ -37,7 +37,9 @@ public class EnemyAnimations : MonoBehaviour
     {
         _enemy.StopMovement();
         PlayHurtAnimation();
+        Debug.Log("enemy hit! stopping movement.");
         yield return new WaitForSeconds(GetCurrentAnimationLength() + 0.3f);
+        Debug.Log("ok it's ok now, resuming movement.");
         _enemy.ResumeMovement();
     }
 
@@ -63,7 +65,7 @@ public class EnemyAnimations : MonoBehaviour
 
     private void EnemyHit(Enemy enemy)
     {
-        if (_enemy = enemy)
+        if (_enemy == enemy)
         {
             StartCoroutine(PlayHurt());
         }
@@ -71,7 +73,7 @@ public class EnemyAnimations : MonoBehaviour
 
     private void EnemyDead(Enemy enemy)
     {
-        if (_enemy = enemy)
+        if (_enemy == enemy)
         {
             StartCoroutine(PlayDead());
         }

@@ -31,10 +31,10 @@ public class EnemyHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            DealDamage(5f);
-        }
+        // if (Input.GetKeyDown(KeyCode.P))
+        // {
+        //     DealDamage(5f);
+        // }
         _healthBar.fillAmount = Mathf.Lerp(_healthBar.fillAmount, 
             CurrentHealth / maxHealth, Time.deltaTime * 10f);
     }

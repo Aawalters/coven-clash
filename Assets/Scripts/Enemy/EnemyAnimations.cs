@@ -37,9 +37,9 @@ public class EnemyAnimations : MonoBehaviour
     {
         _enemy.StopMovement();
         PlayHurtAnimation();
-        Debug.Log("enemy hit! stopping movement.");
+        //Debug.Log("enemy hit! stopping movement.");
         yield return new WaitForSeconds(GetCurrentAnimationLength() + 0.3f);
-        Debug.Log("ok it's ok now, resuming movement.");
+        //Debug.Log("ok it's ok now, resuming movement.");
         _enemy.ResumeMovement();
     }
 

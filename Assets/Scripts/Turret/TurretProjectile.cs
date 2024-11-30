@@ -5,8 +5,9 @@ using UnityEngine;
 public class TurretProjectile : MonoBehaviour
 {
     [SerializeField] protected Transform projectileSpawnPostion;
-    [SerializeField] protected float delayBtwnAttacks = 2f;
-    [SerializeField] protected float damage = 2f;
+    //should be set by turret 
+    [SerializeField] protected float delayBtwnAttacks;
+    [SerializeField] protected float damage;
     [SerializeField] public GameObject prefab; //projectile prefab
 
     public float Damage {get; set;}

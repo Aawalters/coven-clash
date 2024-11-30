@@ -5,6 +5,13 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     [SerializeField] private int attackRange = 4;
+    //leveling 
+    public int level = 0; // turret's upgrade level
+    public int maxLevel = 2;
+    public Sprite[] upgradeSprites; // turret sprites for each level, level == index
+    private SpriteRenderer _spriteRenderer;
+    private TurretProjectile _turretProjectile; // Reference to the turret's projectile script
+
     public Enemy CurrentEnemyTarget;
     private List<Enemy> _enemies;
 
@@ -12,15 +19,71 @@ public class Turret : MonoBehaviour
     void Start()
     {
         _enemies = new List<Enemy>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _turretProjectile = GetComponent<TurretProjectile>();
+        ApplyStats(level); // Set initial stats for turret level 0
+        UpdateSprite(level);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            Debug.Log("attempting to upgrade turret");
+            UpgradeTurret();
+        }
         GetCurrentEnemyTarget();
         RotateTowardsTarget();
     }
 
+    public bool CanUpgrade()
+    {
+        return (level <= maxLevel);
+    }
+
+    public void UpgradeTurret()
+    {
+        if (!CanUpgrade()) return;
+        level++;
+        ApplyStats(level);
+        UpdateSprite(level);
+    }
+
+    private void ApplyStats(int upgradeLevel)
+    {
+        // modify stats based on the upgrade level
+        switch (upgradeLevel)
+        {
+            case 0:
+                _turretProjectile.Damage = 5f;
+                _turretProjectile.DelayPerShot = 0.8f;
+                break;
+            case 1:
+                _turretProjectile.Damage = 10f;
+                _turretProjectile.DelayPerShot = 1f;
+                break;
+            case 2:
+                _turretProjectile.Damage = 20f;
+                _turretProjectile.DelayPerShot = 1.2f;
+                break;
+            default:
+                _turretProjectile.Damage = 5f;
+                _turretProjectile.DelayPerShot = 0.8f;
+                break;
+        }
+    }
+
+    private void UpdateSprite(int upgradeLevel)
+    {
+        // Ensure upgradeSprites has enough entries
+        if (upgradeLevel < upgradeSprites.Length)
+        {
+            _spriteRenderer.sprite = upgradeSprites[upgradeLevel];
+        }
+    }
+    
+    //enemy targeting 
     private void GetCurrentEnemyTarget() 
     {
         if (_enemies.Count <= 0)

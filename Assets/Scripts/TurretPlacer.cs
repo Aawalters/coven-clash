@@ -22,7 +22,7 @@ public class TurretPlacer : MonoBehaviour
     {
         if (isPlacingTurret)
         {
-            UpdateGridHighlights();
+            //UpdateGridHighlights();
 
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int gridPosition = placableTilemap.WorldToCell(mouseWorldPos);
@@ -52,6 +52,8 @@ public class TurretPlacer : MonoBehaviour
 
         previewTurret = Instantiate(currentTurret);
         previewTurret.SetActive(true);
+
+        UpdateGridHighlights();
     }
 
     public void ExitTurretPlacingMode()

@@ -15,6 +15,11 @@ public class Turret : MonoBehaviour
     public Enemy CurrentEnemyTarget;
     private List<Enemy> _enemies;
 
+    //for upgrade panel stuff
+    public int upgradeCost;
+    public int sellPrice;
+    [SerializeField] private ShopManager shopManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +28,8 @@ public class Turret : MonoBehaviour
         _turretProjectile = GetComponent<TurretProjectile>();
         ApplyStats(level); // Set initial stats for turret level 0
         UpdateSprite(level);
+
+        shopManager = FindObjectOfType<ShopManager>();
     }
 
     // Update is called once per frame
@@ -35,6 +42,15 @@ public class Turret : MonoBehaviour
         }
         GetCurrentEnemyTarget();
         RotateTowardsTarget();
+    }
+
+    // Detect turret click
+    void OnMouseDown()
+    {
+        if (shopManager != null)
+        {
+            shopManager.ShowUpgradeSellPanel(this); // Pass this turret to the ShopManager
+        }
     }
 
     public bool CanUpgrade()

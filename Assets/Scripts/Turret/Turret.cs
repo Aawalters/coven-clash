@@ -47,6 +47,7 @@ public class Turret : MonoBehaviour
     // Detect turret click
     void OnMouseDown()
     {
+        Debug.Log("Turret clicked!");
         if (shopManager != null)
         {
             shopManager.ShowUpgradeSellPanel(this); // Pass this turret to the ShopManager

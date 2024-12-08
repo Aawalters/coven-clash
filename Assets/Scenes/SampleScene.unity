@@ -5811,7 +5811,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2040545417
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6105,6 +6105,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3733792074411680611, guid: a39c3e8d563b6c04dbade44af3757e3f, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3733792074411680611, guid: a39c3e8d563b6c04dbade44af3757e3f, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4508721510618501306, guid: a39c3e8d563b6c04dbade44af3757e3f, type: 3}
       propertyPath: upgradeSprites.Array.data[0]
       value: 
@@ -6165,6 +6173,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 175650364, guid: 9c705943cb8cf0b4985b1172f24d71d3, type: 3}
+    - target: {fileID: 4508721510618501309, guid: a39c3e8d563b6c04dbade44af3757e3f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4508721510618501309, guid: a39c3e8d563b6c04dbade44af3757e3f, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4508721510618501310, guid: a39c3e8d563b6c04dbade44af3757e3f, type: 3}
       propertyPath: pools.Array.data[0].prefab
       value: 

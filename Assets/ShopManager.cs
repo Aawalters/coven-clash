@@ -24,6 +24,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private TMP_Text turretSellPriceText;
     [SerializeField] private Button upgradeButton;
     [SerializeField] private Button sellButton;
+    [SerializeField] private Button closePanelButton;
     private Turret selectedTurret;
     private bool isUpgradePanelActive = false;
 
@@ -42,18 +43,7 @@ public class ShopManager : MonoBehaviour
         upgradeSellPanel.SetActive(false);
         upgradeButton.onClick.AddListener(() => UpgradeTurret());
         sellButton.onClick.AddListener(() => SellTurret());
-        
-        // Set up the event listener for clicks outside the panel
-        EventTrigger eventTrigger = upgradeSellPanel.GetComponent<EventTrigger>();
-        if (eventTrigger == null)
-        {
-            eventTrigger = upgradeSellPanel.AddComponent<EventTrigger>();
-        }
-
-        EventTrigger.Entry entry = new EventTrigger.Entry();
-        entry.eventID = EventTriggerType.PointerDown;
-        entry.callback.AddListener((eventData) => OnPointerDown((PointerEventData)eventData));
-        eventTrigger.triggers.Add(entry);
+        closePanelButton.onClick.AddListener(() => CloseUpgradeSellPanel());
     }
 
     private void Update()
@@ -117,7 +107,7 @@ public class ShopManager : MonoBehaviour
         upgradeSellPanel.SetActive(true);
 
         // Position the panel next to the turret
-        PositionPanelNextToTurret(turret);
+        //PositionPanelNextToTurret(turret);
 
         isUpgradePanelActive = true;
     }
@@ -151,16 +141,6 @@ public class ShopManager : MonoBehaviour
         // Close the panel if clicked outside or after an action
         upgradeSellPanel.SetActive(false);
         isUpgradePanelActive = false;
-    }
-
-    // Close panel when clicking outside
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        // Check if the click was outside the upgrade/sell panel
-        if (!RectTransformUtility.RectangleContainsScreenPoint(upgradeSellPanel.GetComponent<RectTransform>(), Input.mousePosition))
-        {
-            CloseUpgradeSellPanel(); // Close the panel if clicked outside
-        }
     }
 
     // Implement the upgrade functionality

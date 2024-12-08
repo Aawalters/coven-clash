@@ -46,19 +46,6 @@ public class ShopManager : MonoBehaviour
         closePanelButton.onClick.AddListener(() => CloseUpgradeSellPanel());
     }
 
-    private void Update()
-    {
-        // Ensure the panel is visible before checking for outside clicks
-        if (isUpgradePanelActive && Input.GetMouseButtonDown(0)) // Left mouse button clicked
-        {
-            // Check if the click is outside the panel
-            if (!RectTransformUtility.RectangleContainsScreenPoint(upgradeSellPanel.GetComponent<RectTransform>(), Input.mousePosition, Camera.main))
-            {
-                CloseUpgradeSellPanel();
-            }
-        }
-    }
-
     public void OpenShop()
     {
         shopMenu.SetActive(true);
@@ -97,6 +84,7 @@ public class ShopManager : MonoBehaviour
 
     public void ShowUpgradeSellPanel(Turret turret)
     {
+        Debug.Log("attempting to show sell panel");
         // Set the selected turret
         selectedTurret = turret;
 
@@ -105,9 +93,12 @@ public class ShopManager : MonoBehaviour
 
         // Show the upgrade/sell panel
         upgradeSellPanel.SetActive(true);
+        if (!upgradeSellPanel) Debug.Log("bro it's null");
+        Debug.Log("shouldve been set to active");
+        Debug.Log($"Is the panel active in hierarchy? {upgradeSellPanel.activeInHierarchy}");
 
         // Position the panel next to the turret
-        //PositionPanelNextToTurret(turret);
+        PositionPanelNextToTurret(turret);
 
         isUpgradePanelActive = true;
     }

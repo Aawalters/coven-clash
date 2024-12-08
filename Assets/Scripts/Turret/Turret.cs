@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    [SerializeField] private int attackRange = 4;
+    //[SerializeField] private int attackRange = 4;
     //leveling 
     public int level = 0; // turret's upgrade level
     public int maxLevel = 2;

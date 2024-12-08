@@ -26,7 +26,6 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Button sellButton;
     [SerializeField] private Button closePanelButton;
     private Turret selectedTurret;
-    private bool isUpgradePanelActive = false;
 
     private GameObject turretToPlace = null;
     [SerializeField] private List<GameObject> turrets;
@@ -99,8 +98,6 @@ public class ShopManager : MonoBehaviour
 
         // Position the panel next to the turret
         PositionPanelNextToTurret(turret);
-
-        isUpgradePanelActive = true;
     }
 
     private void PositionPanelNextToTurret(Turret turret)
@@ -131,7 +128,6 @@ public class ShopManager : MonoBehaviour
     {
         // Close the panel if clicked outside or after an action
         upgradeSellPanel.SetActive(false);
-        isUpgradePanelActive = false;
     }
 
     // Implement the upgrade functionality

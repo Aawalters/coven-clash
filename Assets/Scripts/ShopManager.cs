@@ -29,6 +29,7 @@ public class ShopManager : MonoBehaviour
 
     private GameObject turretToPlace = null;
     [SerializeField] private List<GameObject> turrets;
+    AudioManager audioManager;
 
     void Start()
     {
@@ -43,15 +44,19 @@ public class ShopManager : MonoBehaviour
         upgradeButton.onClick.AddListener(() => UpgradeTurret());
         sellButton.onClick.AddListener(() => SellTurret());
         closePanelButton.onClick.AddListener(() => CloseUpgradeSellPanel());
+
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
     public void OpenShop()
     {
+        audioManager.PlaySFX(audioManager.click);
         shopMenu.SetActive(true);
     }
 
     public void CloseShop()
     {
+        audioManager.PlaySFX(audioManager.click);
         shopMenu.SetActive(false);
     }
 
@@ -78,6 +83,7 @@ public class ShopManager : MonoBehaviour
     public void DeductMoney(int amount)
     {
         playerMoney -= amount;
+        audioManager.PlaySFX(audioManager.turretBuy);
         UpdateMoneyUI();
     }
 
@@ -127,6 +133,7 @@ public class ShopManager : MonoBehaviour
     public void CloseUpgradeSellPanel()
     {
         // Close the panel if clicked outside or after an action
+        audioManager.PlaySFX(audioManager.click);
         upgradeSellPanel.SetActive(false);
     }
 
@@ -136,7 +143,7 @@ public class ShopManager : MonoBehaviour
         if (selectedTurret != null)//&& CanAfford(selectedTurret.upgradeCost)) and CAN UPGRADE
         {
             selectedTurret.UpgradeTurret();
-
+            audioManager.PlaySFX(audioManager.turretUpgrade);
             // Deduct the upgrade cost
             DeductMoney(selectedTurret.upgradeCost);
 
@@ -156,7 +163,7 @@ public class ShopManager : MonoBehaviour
         {
             // Sell turret and refund the player
             //AddMoney(selectedTurret.sellPrice);
-
+            audioManager.PlaySFX(audioManager.turretSell);
             // Destroy the turret
             Destroy(selectedTurret.gameObject);
 

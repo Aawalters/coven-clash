@@ -45,7 +45,7 @@ public class ShopManager : MonoBehaviour
         sellButton.onClick.AddListener(() => SellTurret());
         closePanelButton.onClick.AddListener(() => CloseUpgradeSellPanel());
 
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        audioManager = AudioManager.Instance;
     }
 
     public void OpenShop()

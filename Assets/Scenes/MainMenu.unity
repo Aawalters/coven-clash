@@ -2991,5 +2991,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2832956189489696989, guid: 21a3206e8693f8c489a1e9722e0b1881, type: 3}
+      propertyPath: sfxVolumeSlider
+      value: 
+      objectReference: {fileID: 1889009333}
+    - target: {fileID: 2832956189489696989, guid: 21a3206e8693f8c489a1e9722e0b1881, type: 3}
+      propertyPath: musicVolumeSlider
+      value: 
+      objectReference: {fileID: 685198318}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21a3206e8693f8c489a1e9722e0b1881, type: 3}

@@ -23,7 +23,7 @@ public class MenuManager : MonoBehaviour
         settingsCloseButton.onClick.AddListener(() => CloseSettings());
         menuPanel.SetActive(true);
         settingsPanel.SetActive(false);
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        audioManager = AudioManager.Instance;
     }
 
     public void PlayGame()

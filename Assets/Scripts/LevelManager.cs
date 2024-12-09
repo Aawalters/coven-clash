@@ -15,17 +15,12 @@ public class LevelManager : Singleton<LevelManager>
     void Start()
     {
         TotalLives = lives;
-        //TODO: wave stuff
     }
-
-    void Update() 
-{
-        _baseHealthBar.fillAmount = (float)TotalLives / (float)lives;
-}
 
     private void ReduceLives(Enemy enemy)
     {
         TotalLives--;
+         _baseHealthBar.fillAmount = (float)TotalLives / (float)lives;
         if (TotalLives <= 0)
         {
             TotalLives = 0;
@@ -44,7 +39,6 @@ public class LevelManager : Singleton<LevelManager>
     private void OnEnable()
     {
         Enemy.OnEndReached += ReduceLives;
-        //TODO: wave stuff?
     }
 
     private void OnDisable() 

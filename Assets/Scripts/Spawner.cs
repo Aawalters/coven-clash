@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 [System.Serializable]
 public class EnemyType
@@ -20,24 +22,31 @@ public class Spawner : MonoBehaviour
 {
     [Header("-------- Settings --------")]
     [SerializeField] private List<WaveConfigeration> waves;
-    [SerializeField] private Waypoint defaultWaypoint; // default waypoint for enemies
+    [SerializeField] private Waypoint defaultWaypoint; 
+    [SerializeField] private Button waveControlButton;
+    [SerializeField] private TMP_Text buttonText; 
 
     private int _currentWaveIndex = 0;
     private float _spawnTimer;
     private ObjectPooler _pooler;
     private Queue<EnemyType> _currentWaveQueue = new Queue<EnemyType>();
     private bool _isSpawning = false;
+    private bool _isPaused = false;
 
     void Start()
     {
         _pooler = GetComponent<ObjectPooler>();
         Debug.Log($" wave count is {waves.Count}");
-        StartNextWave();
+
+        // Setup button behavior
+        waveControlButton.onClick.AddListener(ToggleWaveControl);
+        buttonText.text = "Start";
+        //StartNextWave();
     }
 
     void Update()
     {
-        if (!_isSpawning || _currentWaveQueue.Count == 0) return;
+        if (!_isSpawning || _isPaused || _currentWaveQueue.Count == 0) return;
 
         _spawnTimer -= Time.deltaTime;
         if (_spawnTimer <= 0)
@@ -76,13 +85,16 @@ public class Spawner : MonoBehaviour
 
         _spawnTimer = 0;
         _isSpawning = true;
+        _isPaused = false;
+        buttonText.text = "Pause";
     }
 
     private void EndCurrentWave()
     {
         _isSpawning = false;
         _currentWaveIndex++;
-        Invoke(nameof(StartNextWave), 3f); // delay before starting the next wave
+        buttonText.text = "Start";
+        //Invoke(nameof(StartNextWave), 3f); // delay before starting the next wave
     }
 
     private void SpawnEnemy()
@@ -123,6 +135,26 @@ public class Spawner : MonoBehaviour
             }
 
             newInstance.SetActive(true);
+        }
+    }
+
+    private void ToggleWaveControl()
+    {
+        if (!_isSpawning) // Start a new wave
+        {
+            StartNextWave();
+        }
+        else if (_isPaused) // Resume the game
+        {
+            _isPaused = false;
+            Time.timeScale = 1; // Resume game time
+            buttonText.text = "Pause";
+        }
+        else // Pause the game
+        {
+            _isPaused = true;
+            Time.timeScale = 0; // Freeze game time
+            buttonText.text = "Play";
         }
     }
 }

@@ -37,6 +37,7 @@ public class Projectile : MonoBehaviour
 
     protected virtual void MoveProjectile()
     {
+        if (_enemyTarget == null) return;
         transform.position = Vector2.MoveTowards(transform.position,
             _enemyTarget.transform.position, moveSpeed * Time.deltaTime);
         float distanceToTarget = (_enemyTarget.transform.position - this.transform.position).magnitude;
@@ -52,6 +53,7 @@ public class Projectile : MonoBehaviour
 
     private void RotateProjectile()
     {
+        if (_enemyTarget == null) return;
         Vector3 enemyPos = _enemyTarget.transform.position - transform.position;
         float angle = Vector3.SignedAngle(transform.up, enemyPos, transform.forward);
         transform.Rotate(0f, 0f, angle);
@@ -65,7 +67,7 @@ public class Projectile : MonoBehaviour
     // no clue what i need to do here yet
     public void ResetProjectile()
     {
-        //_enemyTarget = null; 
+        _enemyTarget = null; 
         //gameObject.SetActive(false); 
     }
 

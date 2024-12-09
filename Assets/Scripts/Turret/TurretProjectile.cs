@@ -68,6 +68,7 @@ public class TurretProjectile : MonoBehaviour
     
     public void ResetTurretProjectile()
     {
+        _currentProjectileLoaded.ResetProjectile();
         _pooler.ReturnToPool( _currentProjectileLoaded.Prefab, _currentProjectileLoaded.gameObject);
         _currentProjectileLoaded = null;
     }

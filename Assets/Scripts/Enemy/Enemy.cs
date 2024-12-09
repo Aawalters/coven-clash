@@ -108,7 +108,8 @@ public class Enemy : MonoBehaviour
 
         if (Prefab != null)
         {
-            ObjectPooler pooler = FindObjectOfType<ObjectPooler>();
+            Spawner spawner = FindObjectOfType<Spawner>();
+            ObjectPooler pooler = spawner.GetComponent<ObjectPooler>();
             isAlive = false;
             pooler.ReturnToPool(Prefab, gameObject);
         }

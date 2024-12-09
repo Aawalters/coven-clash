@@ -28,7 +28,7 @@ public class Spawner : MonoBehaviour
 
     private int _currentWaveIndex = 0;
     private float _spawnTimer;
-    private ObjectPooler _pooler;
+    public ObjectPooler _pooler;
     private Queue<EnemyType> _currentWaveQueue = new Queue<EnemyType>();
     private bool _isSpawning = false;
     private bool _isPaused = false;
@@ -132,6 +132,8 @@ public class Spawner : MonoBehaviour
                 enemyComponent.ResetEnemy(firstWaypointPosition, waypoint);
                 Debug.Assert (enemyTypeToSpawn.prefab != null, "bro why is the prefab for the enemy to spawn null");
                 enemyComponent.Prefab = enemyTypeToSpawn.prefab;
+                Debug.Log($"enemy should have prefab of type {enemyTypeToSpawn.prefab}");
+                Debug.Log($"actual: {enemyComponent.Prefab}");
             }
             else
             {

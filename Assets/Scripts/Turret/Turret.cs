@@ -40,7 +40,7 @@ public class Turret : MonoBehaviour
             UpgradeTurret();
         }
         GetCurrentEnemyTarget();
-        RotateTowardsTarget();
+        //RotateTowardsTarget();
     }
 
     // detect turret click for the upgrade/sell panel to appear
@@ -142,10 +142,10 @@ public class Turret : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             Enemy enemy = other.GetComponent<Enemy>();
-            if (_enemies.Contains(enemy))
-            {
+            //if (_enemies.Contains(enemy))
+            //{
                 _enemies.Remove(enemy);
-            }
+            //}
         }
     }
 }

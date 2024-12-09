@@ -50,7 +50,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6ce60cf04799847a867f2e3c77abe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 3
   level: 0
   maxLevel: 2
   upgradeSprites:
@@ -58,6 +57,7 @@ MonoBehaviour:
   - {fileID: -767893354, guid: a81630aa35f16ef44befa466eb236c74, type: 3}
   - {fileID: -1357271827, guid: a81630aa35f16ef44befa466eb236c74, type: 3}
   CurrentEnemyTarget: {fileID: 0}
+  purchaseCost: 0
   upgradeCost: 0
   sellPrice: 0
   shopManager: {fileID: 0}
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pools:
   - poolName: Projectiles
-    prefab: {fileID: 0}
+    prefab: {fileID: 1507002274785664012, guid: 1fa6f162ed7b33041878cdabfef08e46, type: 3}
     poolSize: 10
 --- !u!61 &3733792074411680611
 BoxCollider2D:

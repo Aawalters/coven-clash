@@ -10,9 +10,10 @@ public class ShopManager : MonoBehaviour
     public GameObject shopMenu;
     public GameObject turretPrefab;
     public TurretPlacer TurretPlacer;
-    public int playerMoney = 100; // starting money
+    public int playerMoney = 200; // starting money
     //shop panel stuff
     [SerializeField] private TMP_Text moneyText;
+    [SerializeField] private TMP_Text shopMoneyText;
     [SerializeField] private Button openButton;
     [SerializeField] private Button closeButton;
     [SerializeField] private Button turretPurchaceButton0;
@@ -83,6 +84,7 @@ public class ShopManager : MonoBehaviour
     public void UpdateMoneyUI()
     {
         moneyText.text = $"{playerMoney}g";
+        shopMoneyText.text = $"{playerMoney}g";
     }
 
     public void DeductMoney(int amount)

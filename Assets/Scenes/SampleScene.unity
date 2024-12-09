@@ -4111,12 +4111,16 @@ MonoBehaviour:
   waves:
   - enemyTypes:
     - prefab: {fileID: 1496430172}
-      count: 3
+      count: 5
     delayBtwnSpawns: 1
   - enemyTypes:
     - prefab: {fileID: 1496430172}
-      count: 0
+      count: 7
     delayBtwnSpawns: 1
+  - enemyTypes:
+    - prefab: {fileID: 1496430172}
+      count: 5
+    delayBtwnSpawns: 0.2
   defaultWaypoint: {fileID: 1014259622}
   waveControlButton: {fileID: 1108765718}
   buttonText: {fileID: 692044702}
@@ -6858,6 +6862,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3733792074411680611, guid: a39c3e8d563b6c04dbade44af3757e3f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3733792074411680611, guid: a39c3e8d563b6c04dbade44af3757e3f, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 1

@@ -41,11 +41,15 @@ public class Spawner : MonoBehaviour
         // Setup button behavior
         waveControlButton.onClick.AddListener(ToggleWaveControl);
         buttonText.text = "Start";
-        //StartNextWave();
     }
 
     void Update()
     {
+        if (_isSpawning && _currentWaveQueue.Count == 0)
+        {
+            EndCurrentWave();
+            return;
+        }
         if (!_isSpawning || _isPaused || _currentWaveQueue.Count == 0) return;
 
         _spawnTimer -= Time.deltaTime;

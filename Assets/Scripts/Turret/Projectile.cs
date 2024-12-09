@@ -26,7 +26,6 @@ public class Projectile : MonoBehaviour
         Prefab = prefab;
     }
 
-    // Start is called before the first frame update
     protected virtual void Update()
     {
         if (_enemyTarget != null)
@@ -66,8 +65,8 @@ public class Projectile : MonoBehaviour
     // no clue what i need to do here yet
     public void ResetProjectile()
     {
-        //_enemyTarget = null; // Remove the target when reset
-        //gameObject.SetActive(false); // Disable the projectile
+        //_enemyTarget = null; 
+        //gameObject.SetActive(false); 
     }
 
 }

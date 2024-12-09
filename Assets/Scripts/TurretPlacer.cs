@@ -86,13 +86,13 @@ public class TurretPlacer : MonoBehaviour
 
                 if (gridManager.IsTilePlacable(tilePosition))
                 {
-                    highlightTileMap.SetTile(tilePosition, greenTile); // Valid placement
-                    DrawTileOutline(tilePosition, Color.white); // Green outline for valid tiles
+                    highlightTileMap.SetTile(tilePosition, greenTile); // valid placement
+                    DrawTileOutline(tilePosition, Color.white); // green outline for valid tiles
                 }
                 else
                 {
-                    highlightTileMap.SetTile(tilePosition, redTile); // Invalid placement
-                    DrawTileOutline(tilePosition, Color.white); // Red outline for invalid tiles
+                    highlightTileMap.SetTile(tilePosition, redTile); // invalid placement
+                    DrawTileOutline(tilePosition, Color.white); // red outline for invalid tiles
                 }
             }
         }
@@ -103,36 +103,38 @@ public class TurretPlacer : MonoBehaviour
     {
         Vector3 worldPosition = placableTilemap.GetCellCenterWorld(gridPosition);
 
-        // Check if the position is valid
+        // gotta check if the position is valid
         if (gridManager.IsTilePlacable(gridPosition))
         {
             previewTurret.transform.position = worldPosition;
-            previewTurret.GetComponent<Renderer>().material.color = Color.white; // Show valid placement
+            previewTurret.GetComponent<Renderer>().material.color = Color.white; // show valid placement
         }
         else
         {
             previewTurret.transform.position = worldPosition;
-            previewTurret.GetComponent<Renderer>().material.color = Color.red; // Show invalid placement
+            previewTurret.GetComponent<Renderer>().material.color = Color.red; // show invalid placement
         }
     }
 
     private void PlaceTurret(Vector3Int gridPosition)
     {
         Vector3 worldPosition = placableTilemap.GetCellCenterWorld(gridPosition);
-        Instantiate(turretPrefab, worldPosition, Quaternion.identity);
+        GameObject newTurret = Instantiate(turretPrefab, worldPosition, Quaternion.identity);
+        newTurret.SetActive(true);
+        
     }
 
-     // Draw the outline for a given tile at the grid position
+    // draw the outline for a given tile at the grid position
     private void DrawTileOutline(Vector3Int gridPosition, Color outlineColor)
     {
         Vector3 worldPosition = placableTilemap.GetCellCenterWorld(gridPosition);
         Vector3 size = placableTilemap.cellSize;
 
-        // Create or get a LineRenderer for this tile
+        // create or get a LineRenderer for this tile
         LineRenderer lineRenderer = new GameObject("TileOutline").AddComponent<LineRenderer>();
         outlineRenderers.Add(lineRenderer);
 
-        // Set the line renderer properties
+        // set the line renderer properties
         lineRenderer.startWidth = outlineThickness;
         lineRenderer.endWidth = outlineThickness;
         lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Use default sprite shader
@@ -140,19 +142,19 @@ public class TurretPlacer : MonoBehaviour
         lineRenderer.endColor = outlineColor;
         lineRenderer.positionCount = 5;
 
-        // Define the four corners of the rectangle for the tile outline
+        // define the four corners of the rectangle for the tile outline
         Vector3[] corners = new Vector3[5];
         corners[0] = new Vector3(worldPosition.x - size.x / 2, worldPosition.y - size.y / 2, 0);
         corners[1] = new Vector3(worldPosition.x + size.x / 2, worldPosition.y - size.y / 2, 0);
         corners[2] = new Vector3(worldPosition.x + size.x / 2, worldPosition.y + size.y / 2, 0);
         corners[3] = new Vector3(worldPosition.x - size.x / 2, worldPosition.y + size.y / 2, 0);
-        corners[4] = corners[0]; // Close the loop
+        corners[4] = corners[0]; // gotta close the loop!
 
-        // Set the positions of the outline
+        // set the positions of the outline
         lineRenderer.SetPositions(corners);
     }
 
-    // Clear all the outlines
+    // clear all the outlines
     private void ClearOutlines()
     {
         foreach (LineRenderer lr in outlineRenderers)

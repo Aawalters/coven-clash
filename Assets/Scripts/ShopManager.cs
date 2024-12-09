@@ -10,7 +10,7 @@ public class ShopManager : MonoBehaviour
     public GameObject shopMenu;
     public GameObject turretPrefab;
     public TurretPlacer TurretPlacer;
-    public int playerMoney = 100; // Starting money
+    public int playerMoney = 100; // starting money
     //shop panel stuff
     [SerializeField] private TMP_Text moneyText;
     [SerializeField] private Button openButton;
@@ -18,8 +18,8 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Button turretPurchaceButton0;
     [SerializeField] private Button turretPurchaceButton1;
 
-    //upgrade panel stuff
-    public GameObject upgradeSellPanel; // The panel to show upgrade/sell options
+    // upgrade panel stuff
+    public GameObject upgradeSellPanel;
     [SerializeField] private TMP_Text turretUpgradeCostText;
     [SerializeField] private TMP_Text turretSellPriceText;
     [SerializeField] private Button upgradeButton;
@@ -29,6 +29,8 @@ public class ShopManager : MonoBehaviour
 
     private GameObject turretToPlace = null;
     [SerializeField] private List<GameObject> turrets;
+
+    // for SFX
     AudioManager audioManager;
 
     void Start()
@@ -63,8 +65,11 @@ public class ShopManager : MonoBehaviour
     public void SelectTurretToPlace(int index)
     {
         turretToPlace = turrets[index];
-        if (playerMoney >= 50) // TODO: change to turret to place cost 
+        Turret actualTurret = turretToPlace.GetComponent<Turret>();
+        if (CanAfford(actualTurret.purchaseCost)) // TODO: change to turret to place cost 
         {
+            audioManager.PlaySFX(audioManager.turretBuy);
+            DeductMoney(actualTurret.purchaseCost);
             CloseShop();
             //enter turret placing mode 
             TurretPlacer.EnterTurretPlacingMode(turretToPlace); // Enter turret placing mode
@@ -83,8 +88,18 @@ public class ShopManager : MonoBehaviour
     public void DeductMoney(int amount)
     {
         playerMoney -= amount;
-        audioManager.PlaySFX(audioManager.turretBuy);
         UpdateMoneyUI();
+    }
+
+    public void AddMoney(int amount)
+    {
+        playerMoney += amount;
+        UpdateMoneyUI();
+    }
+
+    public bool CanAfford(int amount)
+    {
+        return playerMoney >= amount;
     }
 
     public void ShowUpgradeSellPanel(Turret turret)
@@ -100,7 +115,9 @@ public class ShopManager : MonoBehaviour
         upgradeSellPanel.SetActive(true);
         if (!upgradeSellPanel) Debug.Log("bro it's null");
         Debug.Log("shouldve been set to active");
-        Debug.Log($"Is the panel active in hierarchy? {upgradeSellPanel.activeInHierarchy}");
+        Debug.Log($"is the panel active in hierarchy? {upgradeSellPanel.activeInHierarchy}");
+
+        //TODO: if the turret can't be upgraded, disable the button for upgrading
 
         // Position the panel next to the turret
         PositionPanelNextToTurret(turret);
@@ -108,47 +125,47 @@ public class ShopManager : MonoBehaviour
 
     private void PositionPanelNextToTurret(Turret turret)
     {
-        // Get the turret's world position
+        // get the turret's world position
         Vector3 turretWorldPos = turret.transform.position;
 
-        // Convert the world position to screen position
+        // convert the world position to screen position
         Vector3 screenPos = Camera.main.WorldToScreenPoint(turretWorldPos);
 
-        // Apply an offset (customize as needed)
+        // apply an smol offset
         float panelOffsetX = 100f;
         float panelOffsetY = 50f;
 
-        // Adjust the position of the panel
+        // adjust the position of the panel
         screenPos.x += panelOffsetX;
         screenPos.y += panelOffsetY;
 
-        // Clamp the position to ensure the panel stays on screen
+        // clamp the position to ensure the panel stays on screen!!
         screenPos.x = Mathf.Clamp(screenPos.x, 0, Screen.width - upgradeSellPanel.GetComponent<RectTransform>().rect.width);
         screenPos.y = Mathf.Clamp(screenPos.y, 0, Screen.height - upgradeSellPanel.GetComponent<RectTransform>().rect.height);
 
-        // Set the position in screen space
+        // then set the position in screen space
         upgradeSellPanel.GetComponent<RectTransform>().position = screenPos;
     }
 
     public void CloseUpgradeSellPanel()
     {
-        // Close the panel if clicked outside or after an action
+        // close the panel using the close button
         audioManager.PlaySFX(audioManager.click);
         upgradeSellPanel.SetActive(false);
     }
 
-    // Implement the upgrade functionality
     private void UpgradeTurret()
     {
-        if (selectedTurret != null)//&& CanAfford(selectedTurret.upgradeCost)) and CAN UPGRADE
+        if (selectedTurret != null && CanAfford(selectedTurret.upgradeCost) 
+            && selectedTurret.CanUpgrade())
         {
             selectedTurret.UpgradeTurret();
             audioManager.PlaySFX(audioManager.turretUpgrade);
-            // Deduct the upgrade cost
+            // deduct the upgrade cost
             DeductMoney(selectedTurret.upgradeCost);
 
-            // Update panel UI
-            ShowUpgradeSellPanel(selectedTurret); // Re-update with new stats
+            // update panel UI
+            ShowUpgradeSellPanel(selectedTurret); 
         }
         else
         {
@@ -161,13 +178,14 @@ public class ShopManager : MonoBehaviour
     {
         if (selectedTurret != null)
         {
-            // Sell turret and refund the player
-            //AddMoney(selectedTurret.sellPrice);
+            // sell turret & refund the player
+            AddMoney(selectedTurret.sellPrice);
             audioManager.PlaySFX(audioManager.turretSell);
-            // Destroy the turret
+            // destroy the turret
             Destroy(selectedTurret.gameObject);
 
-            // Close the upgrade/sell panel
+            // close the upgrade/sell panel, 
+            // cus the turret doesn't exist anymore lol
             CloseUpgradeSellPanel();
         }
     }

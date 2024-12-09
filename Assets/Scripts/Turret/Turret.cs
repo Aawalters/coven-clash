@@ -6,33 +6,32 @@ public class Turret : MonoBehaviour
 {
     //[SerializeField] private int attackRange = 4;
     //leveling 
-    public int level = 0; // turret's upgrade level
-    public int maxLevel = 2;
-    public Sprite[] upgradeSprites; // turret sprites for each level, level == index
+    public int level = 0;                   // turret's upgrade level
+    public int maxLevel = 2;                // turret's max upgrade level
+    public Sprite[] upgradeSprites;         // turret sprites for each level, level == index
     private SpriteRenderer _spriteRenderer;
-    private TurretProjectile _turretProjectile; // Reference to the turret's projectile script
+    private TurretProjectile _turretProjectile; // ref to the turret's projectile script
 
-    public Enemy CurrentEnemyTarget;
-    private List<Enemy> _enemies;
+    public Enemy CurrentEnemyTarget;        // enemy that is furthest along & being targeted
+    private List<Enemy> _enemies;           // list of all enemies within turret range
 
     //for upgrade panel stuff
+    public int purchaseCost;
     public int upgradeCost;
     public int sellPrice;
     [SerializeField] private ShopManager shopManager;
 
-    // Start is called before the first frame update
     void Start()
     {
         _enemies = new List<Enemy>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _turretProjectile = GetComponent<TurretProjectile>();
-        ApplyStats(level); // Set initial stats for turret level 0
+        ApplyStats(level); // set initial stats for turret level 0
         UpdateSprite(level);
 
         shopManager = FindObjectOfType<ShopManager>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.U))
@@ -44,13 +43,13 @@ public class Turret : MonoBehaviour
         RotateTowardsTarget();
     }
 
-    // Detect turret click
+    // detect turret click for the upgrade/sell panel to appear
     void OnMouseDown()
     {
         Debug.Log("Turret clicked!");
         if (shopManager != null)
         {
-            shopManager.ShowUpgradeSellPanel(this); // Pass this turret to the ShopManager
+            shopManager.ShowUpgradeSellPanel(this); // pass this turret ref to the ShopManager
         }
     }
 
@@ -61,7 +60,7 @@ public class Turret : MonoBehaviour
 
     public void UpgradeTurret()
     {
-        if (!CanUpgrade()) return;
+        if (!CanUpgrade()) return; // no cheating the system allowed
         level++;
         ApplyStats(level);
         UpdateSprite(level);
@@ -93,7 +92,7 @@ public class Turret : MonoBehaviour
 
     private void UpdateSprite(int upgradeLevel)
     {
-        // Ensure upgradeSprites has enough entries
+        // ensure upgradeSprites has enough entries
         if (upgradeLevel < upgradeSprites.Length)
         {
             _spriteRenderer.sprite = upgradeSprites[upgradeLevel];
@@ -108,13 +107,13 @@ public class Turret : MonoBehaviour
             CurrentEnemyTarget = null;
             return;
         }
-        // Sort enemies by progress (so the one further along is prioritized)
+        // sort enemies by progress (so the one further along is prioritized)
         _enemies.Sort((enemyA, enemyB) => Enemy.CompareProgress(enemyA, enemyB));
 
-        // Remove any dead or invalid enemies from the list
+        // remove any dead or invalid enemies from the list
         _enemies.RemoveAll(enemy => enemy == null || !enemy.isAlive); 
 
-        // After cleanup, pick the new target (if any)
+        // after cleanup, pick the new target if it exists
         CurrentEnemyTarget = _enemies.Count > 0 ? _enemies[0] : null;
     }
 
@@ -127,6 +126,7 @@ public class Turret : MonoBehaviour
         transform.Rotate(0f, 0f, angle);
     }
 
+    //both for detecting when enemy in range, stored in _enemies
     private void OnTriggerEnter2D(Collider2D other) 
     {
         if (other.CompareTag("Enemy"))

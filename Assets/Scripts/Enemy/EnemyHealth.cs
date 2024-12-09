@@ -19,7 +19,6 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private Image _healthBar;
     private Enemy _enemy;
 
-    // Start is called before the first frame update
     void Start()
     {
         CreateHealthBar();
@@ -28,9 +27,9 @@ public class EnemyHealth : MonoBehaviour
         _enemy = GetComponent<Enemy>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // was here for testing purposes
         // if (Input.GetKeyDown(KeyCode.P))
         // {
         //     DealDamage(5f);
@@ -41,7 +40,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void CreateHealthBar()
     {
-        if (_healthBar != null) return; // Prevent duplicate health bars
+        if (_healthBar != null) return; // prevent duplicate health bars T_T
         Debug.Log($"Creating health bar for {gameObject.name}");
         
         GameObject newBar = Instantiate(healthBarPrefab, barPosition.position, Quaternion.identity);
@@ -67,12 +66,12 @@ public class EnemyHealth : MonoBehaviour
     public void ResetHealth()
     {
         CurrentHealth = maxHealth;
-        _healthBar.fillAmount = 1f; // Reset the health bar to full
+        _healthBar.fillAmount = 1f; // reset the health bar to full :3
     }
 
     private void Die()
     {
-        OnEnemyKilled?.Invoke(_enemy); // Notify listeners that the enemy has died
+        OnEnemyKilled?.Invoke(_enemy); // notify all listeners that the enemy has died
         ResetHealth();
 
         //return to pool
@@ -83,7 +82,7 @@ public class EnemyHealth : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Prefab reference is missing on the enemy. Destroying instead.");
+            Debug.LogWarning("Prefab reference is missing on the enemy. Destroying instead 0_o");
             Destroy(_enemy.gameObject);
         }
     }

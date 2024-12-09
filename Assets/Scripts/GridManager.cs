@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class GridManager : MonoBehaviour
 {
+    // both tilemaps combined make up the entire map
     [SerializeField] private Tilemap placableTilemap;
     [SerializeField] private Tilemap nonPlacableTilemap;
 
@@ -16,21 +17,21 @@ public class GridManager : MonoBehaviour
 
     private void InitializeGrid()
     {
-        // Iterate through all tiles in the placable tilemap
+        // iterate through all tiles in the placable tilemap
         foreach (Vector3Int position in placableTilemap.cellBounds.allPositionsWithin)
         {
             if (placableTilemap.HasTile(position))
             {
-                gridStatus[position] = true; // Placable and unoccupied
+                gridStatus[position] = true; // placable and unoccupied
             }
         }
 
-        // Iterate through non-placable tiles
+        // iterate through non-placable tiles
         foreach (Vector3Int position in nonPlacableTilemap.cellBounds.allPositionsWithin)
         {
             if (nonPlacableTilemap.HasTile(position))
             {
-                gridStatus[position] = false; // Non-placable
+                gridStatus[position] = false; // non-placable
             }
         }
     }
@@ -44,7 +45,7 @@ public class GridManager : MonoBehaviour
     {
         if (gridStatus.ContainsKey(gridPosition))
         {
-            gridStatus[gridPosition] = false; // Mark as occupied
+            gridStatus[gridPosition] = false; // mark as occupied
         }
     }
 
@@ -52,7 +53,7 @@ public class GridManager : MonoBehaviour
     {
         if (gridStatus.ContainsKey(gridPosition))
         {
-            gridStatus[gridPosition] = true; // Mark as unoccupied
+            gridStatus[gridPosition] = true; // mark as unoccupied
         }
     }
 }

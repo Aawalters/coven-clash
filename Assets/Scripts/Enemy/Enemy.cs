@@ -14,12 +14,12 @@ public class Enemy : MonoBehaviour
     private EnemyHealth _enemyHealth;
     private bool moveEnabled;
 
-    public GameObject Prefab { get; set; } // Reference to the prefab for this enemy
+    public GameObject Prefab { get; set; } // ref to the prefab for this enemy
     public static event System.Action<Enemy> OnEndReached;
     public bool isAlive;
     public EnemyHealth EnemyHealth => _enemyHealth;
 
-    // Properties to track progress
+    // to track progress along path 
     public int CurrentWaypointIndex => _currentWaypointIndex; 
     public float DistanceToNextWaypoint => (transform.position - CurrentPointPosition).magnitude;
 
@@ -114,7 +114,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Prefab reference is missing on the enemy when returning to the pool.");
+            Debug.LogWarning("girl the prefab reference is missing on the enemy when trying to return to the pool.");
         }
     }
 
@@ -128,13 +128,15 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        transform.position = position; // Reset position to the first waypoint
-        Waypoint = waypoint;           // Reassign the waypoint system
-        _currentWaypointIndex = 0;     // Reset the waypoint index
-        _enemyHealth.ResetHealth();    // Reset health if necessary
+        transform.position = position; // reset position to the first waypoint
+        Waypoint = waypoint;           // reassign the waypoint
+        _currentWaypointIndex = 0;     // & reset the waypoint index
+        _enemyHealth.ResetHealth();    // reset health
         isAlive = true;
     }
 
+
+    // for when the enemy gets hit by a projectile 
     public void StopMovement()
     {
         moveEnabled = false;
@@ -145,11 +147,12 @@ public class Enemy : MonoBehaviour
         moveEnabled = true;
     }
 
-    // Static method for comparing progress of two enemies
+    // static method for comparing progress of two enemies
     public static int CompareProgress(Enemy enemyA, Enemy enemyB)
     {
         //Debug.Log($"comparing two enemies. enemy A index {enemyA.CurrentWaypointIndex}, enemy B index {enemyB.CurrentWaypointIndex}");
-        // First compare based on waypoint index (further along in the path is prioritized)
+        // since targeting prioritizes enemies further along on the path, first
+        // compare waypoint index, then if the same waypoint then the distance to the next onoe
         if (enemyA.CurrentWaypointIndex < enemyB.CurrentWaypointIndex)
         {
             return 1; // enemyB is further along
@@ -160,7 +163,6 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            // If they are at the same waypoint, prioritize by distance to the next waypoint
             return enemyA.DistanceToNextWaypoint > enemyB.DistanceToNextWaypoint ? 1 : -1;
         }
     }

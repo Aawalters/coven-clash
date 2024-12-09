@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelManager : Singleton<LevelManager>
 {
     [SerializeField] private int lives = 10;
+    [SerializeField] private Image _baseHealthBar;
 
     public int TotalLives {get; set;}
     public int CurrentWave {get; set;}
@@ -15,6 +17,11 @@ public class LevelManager : Singleton<LevelManager>
         TotalLives = lives;
         //TODO: wave stuff
     }
+
+    void Update() 
+{
+        _baseHealthBar.fillAmount = (float)TotalLives / (float)lives;
+}
 
     private void ReduceLives(Enemy enemy)
     {

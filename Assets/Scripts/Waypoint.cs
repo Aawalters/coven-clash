@@ -13,7 +13,6 @@ public class Waypoint : MonoBehaviour
     private Vector3 _currentPos;
     private bool _gameStarted;
 
-    // Start is called before the first frame update
     void Start()
     {
         _gameStarted = true;
@@ -43,11 +42,5 @@ public class Waypoint : MonoBehaviour
                 Gizmos.DrawLine(Points[i] + _currentPos, Points[i + 1] + _currentPos);
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

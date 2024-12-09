@@ -17,7 +17,6 @@ public class TurretProjectile : MonoBehaviour
     protected Turret _turret;
     protected Projectile _currentProjectileLoaded;
 
-    // Start is called before the first frame update
     private void Start()
     {
         _turret = GetComponent<Turret>();
@@ -27,7 +26,6 @@ public class TurretProjectile : MonoBehaviour
         LoadProjectile();
     }
 
-    // Update is called once per frame
     protected virtual void Update()
     {
         if (IsTurretEmpty())
@@ -40,6 +38,7 @@ public class TurretProjectile : MonoBehaviour
                 _currentProjectileLoaded != null &&
                 _turret.CurrentEnemyTarget.isAlive)
             {
+                // attack!!!!
                 _currentProjectileLoaded.transform.parent = null;
                 _currentProjectileLoaded.SetEnemy(_turret.CurrentEnemyTarget);
             }

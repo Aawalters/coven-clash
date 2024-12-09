@@ -23,8 +23,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] Slider musicVolumeSlider;
     [SerializeField] Slider sfxVolumeSlider;
 
+    // we love singletones here 
     private static AudioManager instance;
-
     public static AudioManager Instance
     {
         get
@@ -42,7 +42,7 @@ public class AudioManager : MonoBehaviour
     }
     private void Awake()
     {
-        // Singleton Pattern to persist between scenes
+        // singleton pattern, to persist between scenes
         if (instance == null)
         {
             instance = this;
@@ -66,13 +66,13 @@ public class AudioManager : MonoBehaviour
         if (musicVolumeSlider != null) musicVolumeSlider.value = savedMusicVolume;
         if (sfxVolumeSlider != null) sfxVolumeSlider.value = savedSFXVolume;
 
-        // Attach listeners to sliders (if they are set)
+        // attatch listeners to sliders (if they are in the scene & set)
         if (musicVolumeSlider != null)
             musicVolumeSlider.onValueChanged.AddListener(ChangeMusicVolume);
         if (sfxVolumeSlider != null)
             sfxVolumeSlider.onValueChanged.AddListener(ChangeSFXVolume);
 
-        // Start background music
+        // start background music
         musicSource.clip = backgroundMusic;
         musicSource.Play();
     }
@@ -85,14 +85,14 @@ public class AudioManager : MonoBehaviour
     public void ChangeMusicVolume(float value)
     {
         musicSource.volume = value;
-        PlayerPrefs.SetFloat("MusicVolume", value); // Save the volume
+        PlayerPrefs.SetFloat("MusicVolume", value); // save the volume
         PlayerPrefs.Save();
     }
 
     public void ChangeSFXVolume(float value)
     {
         SFXSource.volume = value;
-        PlayerPrefs.SetFloat("SFXVolume", value); // Save the volume
+        PlayerPrefs.SetFloat("SFXVolume", value); // save the volume
         PlayerPrefs.Save();
     }
 }

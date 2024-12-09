@@ -18,9 +18,9 @@ public class WaveConfigeration
 
 public class Spawner : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("-------- Settings --------")]
     [SerializeField] private List<WaveConfigeration> waves;
-    [SerializeField] private Waypoint defaultWaypoint; // Default waypoint for enemies
+    [SerializeField] private Waypoint defaultWaypoint; // default waypoint for enemies
 
     private int _currentWaveIndex = 0;
     private float _spawnTimer;
@@ -28,7 +28,6 @@ public class Spawner : MonoBehaviour
     private Queue<EnemyType> _currentWaveQueue = new Queue<EnemyType>();
     private bool _isSpawning = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         _pooler = GetComponent<ObjectPooler>();
@@ -36,7 +35,6 @@ public class Spawner : MonoBehaviour
         StartNextWave();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!_isSpawning || _currentWaveQueue.Count == 0) return;
@@ -62,7 +60,7 @@ public class Spawner : MonoBehaviour
         Debug.Log($"Starting wave {_currentWaveIndex + 1}");
         _currentWaveQueue.Clear();
 
-        // Populate the queue for this wave
+        // populate the queue for this wave
         foreach (EnemyType enemyType in waves[_currentWaveIndex].enemyTypes)
         {
             if (enemyType.prefab == null)
@@ -84,7 +82,7 @@ public class Spawner : MonoBehaviour
     {
         _isSpawning = false;
         _currentWaveIndex++;
-        Invoke(nameof(StartNextWave), 3f); // Delay before starting the next wave
+        Invoke(nameof(StartNextWave), 3f); // delay before starting the next wave
     }
 
     private void SpawnEnemy()

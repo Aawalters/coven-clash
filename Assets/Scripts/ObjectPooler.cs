@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
 {
+    // this whole class is just a bit to optimize gameplay
+    // figured TD games like bloons could get pretty crazy, not super necessasry
+    // right now for this game though lol
     [System.Serializable]
     public class Pool
     {

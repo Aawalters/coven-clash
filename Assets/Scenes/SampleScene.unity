@@ -4259,6 +4259,7 @@ MonoBehaviour:
   defaultWaypoint: {fileID: 1014259622}
   waveControlButton: {fileID: 1108765718}
   buttonText: {fileID: 692044702}
+  _pooler: {fileID: 0}
 --- !u!4 &1014259625
 Transform:
   m_ObjectHideFlags: 0
@@ -4793,6 +4794,7 @@ MonoBehaviour:
   level: 0
   maxLevel: 2
   upgradeSprites: []
+  _spriteRenderer: {fileID: 0}
   CurrentEnemyTarget: {fileID: 0}
   purchaseCost: 0
   upgradeCost: 0
@@ -6783,6 +6785,7 @@ MonoBehaviour:
   level: 0
   maxLevel: 2
   upgradeSprites: []
+  _spriteRenderer: {fileID: 0}
   CurrentEnemyTarget: {fileID: 0}
   purchaseCost: 0
   upgradeCost: 0
@@ -7111,9 +7114,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4508721510618501313, guid: a39c3e8d563b6c04dbade44af3757e3f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4508721510618501308, guid: a39c3e8d563b6c04dbade44af3757e3f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a39c3e8d563b6c04dbade44af3757e3f, type: 3}
 --- !u!1001 &7080515928391594666
 PrefabInstance:
@@ -7277,7 +7281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7572765011118634462, guid: 049b6c80d7016a84ca5a26a1e31856eb, type: 3}
       propertyPath: DeathCoinReward
-      value: 10
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7572765011118634463, guid: 049b6c80d7016a84ca5a26a1e31856eb, type: 3}
       propertyPath: m_Sprite

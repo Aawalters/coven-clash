@@ -102,17 +102,17 @@ public class TurretPlacer : MonoBehaviour
     private void UpdatePreviewTurretPosition(Vector3Int gridPosition)
     {
         Vector3 worldPosition = placableTilemap.GetCellCenterWorld(gridPosition);
-
+        Turret hopefullyTurret = previewTurret.GetComponent<Turret>();
         // gotta check if the position is valid
         if (gridManager.IsTilePlacable(gridPosition))
         {
-            previewTurret.transform.position = worldPosition;
-            previewTurret.GetComponent<Renderer>().material.color = Color.white; // show valid placement
+            hopefullyTurret.transform.position = worldPosition;
+            hopefullyTurret._spriteRenderer.material.color = Color.white; // show valid placement
         }
         else
         {
-            previewTurret.transform.position = worldPosition;
-            previewTurret.GetComponent<Renderer>().material.color = Color.red; // show invalid placement
+            hopefullyTurret.transform.position = worldPosition;
+            hopefullyTurret._spriteRenderer.material.color = Color.red; // show invalid placement
         }
     }
 

@@ -9,7 +9,7 @@ public class Turret : MonoBehaviour
     public int level = 0;                   // turret's upgrade level
     public int maxLevel = 2;                // turret's max upgrade level
     public Sprite[] upgradeSprites;         // turret sprites for each level, level == index
-    private SpriteRenderer _spriteRenderer;
+    [SerializeField] public SpriteRenderer _spriteRenderer;
     private TurretProjectile _turretProjectile; // ref to the turret's projectile script
 
     public Enemy CurrentEnemyTarget;        // enemy that is furthest along & being targeted
@@ -24,7 +24,7 @@ public class Turret : MonoBehaviour
     void Start()
     {
         _enemies = new List<Enemy>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        //_spriteRenderer = GetComponent<SpriteRenderer>();
         _turretProjectile = GetComponent<TurretProjectile>();
         ApplyStats(level); // set initial stats for turret level 0
         UpdateSprite(level);
@@ -44,14 +44,16 @@ public class Turret : MonoBehaviour
     }
 
     // detect turret click for the upgrade/sell panel to appear
+    /*
     void OnMouseDown()
     {
         Debug.Log("Turret clicked!");
         if (shopManager != null)
         {
-            shopManager.ShowUpgradeSellPanel(this); // pass this turret ref to the ShopManager
+            //shopManager.ShowUpgradeSellPanel(this); // pass this turret ref to the ShopManager
         }
     }
+    */
 
     public bool CanUpgrade()
     {

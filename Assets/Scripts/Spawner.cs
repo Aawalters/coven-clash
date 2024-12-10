@@ -127,13 +127,13 @@ public class Spawner : MonoBehaviour
             Enemy enemyComponent = newInstance.GetComponent<Enemy>();
             if (enemyComponent != null)
             {
-                Debug.Log($"Spawning enemy at {firstWaypointPosition}");
-                Debug.Log($"Spawning enemy of type: {enemyTypeToSpawn.prefab.name}");
+                //Debug.Log($"Spawning enemy at {firstWaypointPosition}");
+                //Debug.Log($"Spawning enemy of type: {enemyTypeToSpawn.prefab.name}");
                 enemyComponent.ResetEnemy(firstWaypointPosition, waypoint);
                 Debug.Assert (enemyTypeToSpawn.prefab != null, "bro why is the prefab for the enemy to spawn null");
                 enemyComponent.Prefab = enemyTypeToSpawn.prefab;
-                Debug.Log($"enemy should have prefab of type {enemyTypeToSpawn.prefab}");
-                Debug.Log($"actual: {enemyComponent.Prefab}");
+                //Debug.Log($"enemy should have prefab of type {enemyTypeToSpawn.prefab}");
+                //Debug.Log($"actual: {enemyComponent.Prefab}");
             }
             else
             {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float MoveSpeed;
-    [SerializeField] private int DeathCoinReward;
+    [SerializeField] public int DeathCoinReward;
     [SerializeField] private Waypoint Waypoint;
 
     private SpriteRenderer _spriteRenderer;

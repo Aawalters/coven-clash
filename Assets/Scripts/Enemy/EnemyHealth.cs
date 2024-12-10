@@ -73,7 +73,8 @@ public class EnemyHealth : MonoBehaviour
     {
         OnEnemyKilled?.Invoke(_enemy); // notify all listeners that the enemy has died
         ResetHealth();
-
+        ShopManager shopManager = FindObjectOfType<ShopManager>();
+        shopManager.AddMoney(_enemy.DeathCoinReward);
         //return to pool
         if (_enemy.Prefab != null)
         {

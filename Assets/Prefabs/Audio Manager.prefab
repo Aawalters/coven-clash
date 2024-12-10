@@ -56,6 +56,10 @@ MonoBehaviour:
   turretUpgrade: {fileID: 8300000, guid: d3be2d9821960d14b924691572eac14d, type: 3}
   turretSell: {fileID: 8300000, guid: e1c7933fe9e3855419daa118be648396, type: 3}
   turretBuy: {fileID: 8300000, guid: 8346e569b34f2764f86cf5d3be9439da, type: 3}
+  win: {fileID: 8300000, guid: 2efa7020ce05c344fb2a6010c0bb43f2, type: 3}
+  lose: {fileID: 8300000, guid: d11d878e64ad09f4bbe4a62ccc50db2b, type: 3}
+  musicVolumeSlider: {fileID: 0}
+  sfxVolumeSlider: {fileID: 0}
 --- !u!1 &2832956189652007206
 GameObject:
   m_ObjectHideFlags: 0

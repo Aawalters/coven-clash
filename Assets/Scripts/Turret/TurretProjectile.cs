@@ -16,11 +16,14 @@ public class TurretProjectile : MonoBehaviour
     protected ObjectPooler _pooler;
     protected Turret _turret;
     protected Projectile _currentProjectileLoaded;
+        // for SFX
+    AudioManager audioManager;
 
     private void Start()
     {
         _turret = GetComponent<Turret>();
         _pooler = GetComponent<ObjectPooler>();
+        audioManager = AudioManager.Instance;
         Damage = damage;
         DelayPerShot = delayBtwnAttacks;
         LoadProjectile();
@@ -39,6 +42,7 @@ public class TurretProjectile : MonoBehaviour
                 _turret.CurrentEnemyTarget.isAlive)
             {
                 // attack!!!!
+                audioManager.PlaySFX(audioManager.turretFire);
                 _currentProjectileLoaded.transform.parent = null;
                 _currentProjectileLoaded.SetEnemy(_turret.CurrentEnemyTarget);
             }

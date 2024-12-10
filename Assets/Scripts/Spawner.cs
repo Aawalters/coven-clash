@@ -32,20 +32,29 @@ public class Spawner : MonoBehaviour
     private Queue<EnemyType> _currentWaveQueue = new Queue<EnemyType>();
     private bool _isSpawning = false;
     private bool _isPaused = false;
+    public int _activeEnemies;
+    AudioManager audioManager;
 
     void Start()
     {
         _pooler = GetComponent<ObjectPooler>();
         Debug.Log($" wave count is {waves.Count}");
-
+        audioManager = AudioManager.Instance;
         // Setup button behavior
         waveControlButton.onClick.AddListener(ToggleWaveControl);
         buttonText.text = "Start";
+        Time.timeScale = 1; 
     }
 
     void Update()
     {
-        if (_isSpawning && _currentWaveQueue.Count == 0)
+        if (_currentWaveIndex >= waves.Count && _activeEnemies == 0)
+        {
+            // victory!! 
+            LevelManager levelManager = FindObjectOfType<LevelManager>();
+            levelManager.Win();
+        }
+        if (_isSpawning && _currentWaveQueue.Count == 0 && _activeEnemies == 0)
         {
             EndCurrentWave();
             return;
@@ -98,7 +107,6 @@ public class Spawner : MonoBehaviour
         _isSpawning = false;
         _currentWaveIndex++;
         buttonText.text = "Start";
-        //Invoke(nameof(StartNextWave), 3f); // delay before starting the next wave
     }
 
     private void SpawnEnemy()
@@ -140,12 +148,14 @@ public class Spawner : MonoBehaviour
                 Debug.LogError("Enemy component not found on spawned instance!");
             }
 
+            _activeEnemies++; 
             newInstance.SetActive(true);
         }
     }
 
     private void ToggleWaveControl()
     {
+        audioManager.PlaySFX(audioManager.click);
         if (!_isSpawning) // Start a new wave
         {
             StartNextWave();

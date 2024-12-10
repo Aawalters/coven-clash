@@ -14,6 +14,12 @@ public class Projectile : MonoBehaviour
     public GameObject Prefab {get; set;}
 
     protected Enemy _enemyTarget;
+    AudioManager audioManager;
+
+    private void Start()
+    {
+        audioManager = AudioManager.Instance;
+    }
 
     public void Initialize(GameObject prefab)
     {
@@ -45,6 +51,7 @@ public class Projectile : MonoBehaviour
         if (distanceToTarget <= minDistanceToDealDamage)
         {
             //Debug.Log("hit the target!!");
+            audioManager.PlaySFX(audioManager.enemyHit);
             OnEnemyHit?.Invoke(_enemyTarget, Damage);
             _enemyTarget.EnemyHealth.DealDamage(Damage);
             TurretOwner.ResetTurretProjectile();

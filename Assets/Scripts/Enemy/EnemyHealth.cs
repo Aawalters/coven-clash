@@ -79,6 +79,7 @@ public class EnemyHealth : MonoBehaviour
         if (_enemy.Prefab != null)
         {
             Spawner spawner = FindObjectOfType<Spawner>();
+            spawner._activeEnemies--;
             ObjectPooler pooler = spawner.GetComponent<ObjectPooler>();
             pooler.ReturnToPool(_enemy.Prefab, _enemy.gameObject);
         }

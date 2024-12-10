@@ -18,6 +18,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip turretUpgrade;
     public AudioClip turretSell;
     public AudioClip turretBuy;
+    public AudioClip win;
+    public AudioClip lose;
 
     [Header("-------- Audio Settings --------")]
     [SerializeField] Slider musicVolumeSlider;

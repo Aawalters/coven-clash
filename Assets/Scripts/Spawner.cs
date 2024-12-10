@@ -81,6 +81,7 @@ public class Spawner : MonoBehaviour
 
         Debug.Log($"Starting wave {_currentWaveIndex + 1}");
         _currentWaveQueue.Clear();
+        _activeEnemies = 0;
 
         // populate the queue for this wave
         foreach (EnemyType enemyType in waves[_currentWaveIndex].enemyTypes)

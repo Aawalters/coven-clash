@@ -58,7 +58,7 @@ public class Turret : MonoBehaviour
 
     public bool CanUpgrade()
     {
-        return (level <= maxLevel);
+        return (level < maxLevel);
     }
 
     public void UpgradeTurret()

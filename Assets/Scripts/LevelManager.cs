@@ -43,7 +43,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         //Debug.LogError("GAME OVER!!!");
         Time.timeScale = 0; 
-        audioManager.PlaySFX(audioManager.lose);
+       // audioManager.PlaySFX(audioManager.lose);
         loseText.gameObject.SetActive(true);
         menuButton.gameObject.SetActive(true);
     }
@@ -51,7 +51,7 @@ public class LevelManager : Singleton<LevelManager>
     public void Win()
     {
         Time.timeScale = 0; 
-        audioManager.PlaySFX(audioManager.win);
+       // audioManager.PlaySFX(audioManager.win);
         winText.gameObject.SetActive(true);
         menuButton.gameObject.SetActive(true);
     }

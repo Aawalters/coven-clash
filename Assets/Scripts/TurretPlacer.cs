@@ -52,7 +52,8 @@ public class TurretPlacer : MonoBehaviour
 
         previewTurret = Instantiate(currentTurret);
         previewTurret.SetActive(true);
-
+        Turret hopefullyTurret = previewTurret.GetComponent<Turret>();
+        hopefullyTurret.isSelectable = false;
         UpdateGridHighlights();
     }
 

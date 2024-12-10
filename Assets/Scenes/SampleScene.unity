@@ -5339,7 +5339,7 @@ MonoBehaviour:
   shopMenu: {fileID: 1727728092}
   turretPrefab: {fileID: 44898623}
   TurretPlacer: {fileID: 217586613}
-  playerMoney: 100
+  playerMoney: 400
   moneyText: {fileID: 713648941}
   shopMoneyText: {fileID: 248997477}
   openButton: {fileID: 866998406}

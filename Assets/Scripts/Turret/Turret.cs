@@ -19,6 +19,7 @@ public class Turret : MonoBehaviour
     public int purchaseCost;
     public int upgradeCost;
     public int sellPrice;
+    public bool isSelectable = true;
     [SerializeField] private ShopManager shopManager;
 
     void Start()
@@ -75,19 +76,19 @@ public class Turret : MonoBehaviour
         {
             case 0:
                 _turretProjectile.Damage = 5f;
-                _turretProjectile.DelayPerShot = 0.8f;
+                _turretProjectile.DelayPerShot = 1.0f;
                 break;
             case 1:
                 _turretProjectile.Damage = 10f;
-                _turretProjectile.DelayPerShot = 1f;
+                _turretProjectile.DelayPerShot = 0.8f;
                 break;
             case 2:
-                _turretProjectile.Damage = 20f;
-                _turretProjectile.DelayPerShot = 1.2f;
+                _turretProjectile.Damage = 15f;
+                _turretProjectile.DelayPerShot = 0.5f;
                 break;
             default:
                 _turretProjectile.Damage = 5f;
-                _turretProjectile.DelayPerShot = 0.8f;
+                _turretProjectile.DelayPerShot = 1.0f;
                 break;
         }
     }

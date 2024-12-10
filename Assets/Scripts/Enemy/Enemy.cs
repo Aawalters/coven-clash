@@ -134,6 +134,7 @@ public class Enemy : MonoBehaviour
         _currentWaypointIndex = 0;     // & reset the waypoint index
         _enemyHealth.ResetHealth();    // reset health
         isAlive = true;
+        moveEnabled = true;
     }
 
 

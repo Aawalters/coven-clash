@@ -106,6 +106,7 @@ public class ShopManager : MonoBehaviour
 
     public void ShowUpgradeSellPanel(Turret turret)
     {
+        if (upgradeSellPanel.activeSelf || turret == null || !turret.isSelectable) return;
         Debug.Log("attempting to show sell panel");
         // Set the selected turret
         selectedTurret = turret;

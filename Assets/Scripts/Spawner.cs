@@ -108,6 +108,16 @@ public class Spawner : MonoBehaviour
         _isSpawning = false;
         _currentWaveIndex++;
         buttonText.text = "Start";
+       TriggerWaveDialogue();
+    }
+
+    private void TriggerWaveDialogue()
+    {
+        if (_currentWaveIndex < waves.Count)
+        {
+            string knotName = $"Wave{_currentWaveIndex}"; 
+            DialogueManager.Instance.StartDialogueAt(knotName);
+        }
     }
 
     private void SpawnEnemy()

@@ -1,6 +1,4 @@
-->Wave1Start
-
-=== Wave1Start ===
+=== Wave1 ===
 # NPC: NPC1
 Welcome to the battlefield! Are you ready for Wave 1?
 * Yes, bring it on!
@@ -13,7 +11,7 @@ Welcome to the battlefield! Are you ready for Wave 1?
 === Wave1End ===
 -> DONE
 
-=== Wave2Start ===
+=== Wave2 ===
 # NPC: NPC2
 Great job on Wave 1! Wave 2 is going to be tougher. Are you ready?
 * Absolutely!

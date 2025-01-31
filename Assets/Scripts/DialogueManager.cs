@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Ink.Runtime;
 
 public class DialogueManager : MonoBehaviour {
@@ -10,11 +11,11 @@ public class DialogueManager : MonoBehaviour {
     private Story story;
 
     public GameObject dialoguePanel;
-    public Text npcNameText;
-    public Image npcPortrait;
-    public Text dialogueText;
+    [SerializeField] private TMP_Text npcNameText;
+    [SerializeField] private Image npcPortrait;
+    [SerializeField] private TMP_Text dialogueText;
     public GameObject choicesPanel;
-    public Button choiceButtonPrefab;
+    [SerializeField] private Button choiceButtonPrefab;
 
     private bool isDialogueActive;
 
@@ -34,6 +35,8 @@ public class DialogueManager : MonoBehaviour {
         // Example NPC portraits setup
         npcPortraits["NPC1"] = Resources.Load<Sprite>("Portraits/NPC1");
         npcPortraits["NPC2"] = Resources.Load<Sprite>("Portraits/NPC2");
+
+        isDialogueActive = false;
     }
 
     public void StartDialogueAt(string knotName) 
@@ -78,6 +81,9 @@ public class DialogueManager : MonoBehaviour {
                     }
                 }
             }
+            
+            List<Choice> choices = story.currentChoices;
+            if (choices.Count > 0) DisplayChoices();
         } 
         else 
         {
@@ -121,7 +127,7 @@ public class DialogueManager : MonoBehaviour {
     private void EndDialogue() 
     {
         isDialogueActive = false;
-        dialoguePanel.SetActive(false); // Corrected here
+        dialoguePanel.SetActive(false);
         //FindObjectOfType<Spawner>()?.DialogueFinished();
     }
 }

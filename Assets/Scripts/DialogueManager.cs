@@ -37,6 +37,7 @@ public class DialogueManager : MonoBehaviour {
         npcPortraits["NPC2"] = Resources.Load<Sprite>("Portraits/NPC2");
 
         isDialogueActive = false;
+        dialoguePanel.SetActive(false);
     }
 
     public void StartDialogueAt(string knotName) 
@@ -106,9 +107,11 @@ public class DialogueManager : MonoBehaviour {
             foreach (var choice in choices) 
             {
                 Button button = Instantiate(choiceButtonPrefab, choicesPanel.transform);
-                button.GetComponentInChildren<Text>().text = choice.text;
+                button.GetComponentInChildren<TMP_Text>().text = choice.text;
                 int choiceIndex = choice.index;
                 button.onClick.AddListener(() => MakeChoice(choiceIndex));
+                button.gameObject.SetActive(true);
+                EnableAllChildren(button.gameObject);
             }
         } 
         else 
@@ -122,6 +125,12 @@ public class DialogueManager : MonoBehaviour {
     {
         story.ChooseChoiceIndex(choiceIndex);
         DisplayNextLine();
+
+        // nuke the buttons once we're done with them 
+        foreach (Transform child in choicesPanel.transform) 
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     private void EndDialogue() 
@@ -130,4 +139,17 @@ public class DialogueManager : MonoBehaviour {
         dialoguePanel.SetActive(false);
         //FindObjectOfType<Spawner>()?.DialogueFinished();
     }
+
+    //helper method to help with the nightmare that is unity UI??
+    private void EnableAllChildren(GameObject obj) {
+        foreach (Transform child in obj.transform) {
+            if (!child.gameObject.activeSelf) {
+                Debug.Log($"Enabling child: {child.name}");
+                child.gameObject.SetActive(true);
+            }
+            EnableAllChildren(child.gameObject);
+        }
+    }
+
+
 }
